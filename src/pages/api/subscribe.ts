@@ -19,12 +19,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const user = await fauna.query<User>(
       q.Get(
         q.Match(
-          q.Index('user.by.email'),
-            q.Casefold(session.user.email)
+          q.Index('user_by_email'),
+           q.Casefold(session.user.email)
           )
         )
       )
     let customerId = user.data.stripe_customer_id
+    
     if (!customerId) {
 
       const stripeCustomer = await stripe.customers.create({
@@ -36,12 +37,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         q.Ref(q.Collection('users'), user.ref.id),
         {
           data: { 
-            stripe_customer_id: stripeCustomer.id,
+            stripe_costumer_id: stripeCustomer.id,
           }
         }
       )
     )
-    customerId = stripeCustomer.id
+    customerId= stripeCustomer.id
  }
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
