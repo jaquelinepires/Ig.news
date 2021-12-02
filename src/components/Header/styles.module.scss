@@ -27,7 +27,7 @@
       transition: color 0.2s;
 
       & + a {
-        // espacamento dos itens apartir do segundo
+        // espacamento dos itens a partir do segundo
         color: var(--white);
         margin-left: 2rem;
       }
